@@ -26,23 +26,21 @@ router.route('/year/:page/:year')
 router.route('/getYears')
         .get(postController.getYears);
 
+router.use(checkAdmin);
+
 router.route('/save')
-        .all(checkAdmin)
         .all(createFolder('images'))
         .all(fileUpload().array('images'))
         .all(resizeImage)
         .post(postController.save);
 
 router.route('/update')
-        .all(checkAdmin)
         .put(postController.update);
 
 router.route('/delete')
-        .all(checkAdmin)
         .delete(postController.delete)
 
 router.route('/getCopy')
-        .all(checkAdmin)
         .get(postController.getPhotosCopy)
 
 module.exports = router

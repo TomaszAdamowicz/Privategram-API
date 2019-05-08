@@ -13,8 +13,7 @@ In ``` settings/jwt.js ``` you set JWT secret
 In ``` settings/hostUrl.js ``` you set url needed to create paths to files you will be adding to database.
 
 ```
-git clone 
-cd Privategram API
+git clone https://github.com/TomaszAdamowicz/Privategram-API.git
 npm start
 
 ```
@@ -26,10 +25,6 @@ npm start
 * [jimp](https://www.npmjs.com/package/jimp)
 * [multer](https://www.npmjs.com/package/multer)
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
 
 * **Tomasz Adamowicz** - *Initial work* - (https://github.com/TomaszAdamowicz)
@@ -37,6 +32,3 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
