@@ -14,6 +14,7 @@ In ``` settings/hostUrl.js ``` you set url needed to create paths to files you w
 
 ```
 git clone https://github.com/TomaszAdamowicz/Privategram-API.git
+npm i
 npm start
 
 ```
