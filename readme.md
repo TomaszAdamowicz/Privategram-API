@@ -1,6 +1,6 @@
 # Privategram REST API 1.0.0
 
-Api for private instagram. Initialy made when my son was born, to share his pictures with closest friends and family members without exposing them to sociall aps like facebook, instargram etc.
+Api for private instagram. I've made it, when my son was born, to share his pictures with closest friends and family members without exposing them to social aps like facebook, instargram etc.
 
 Project is still in development. 
 
