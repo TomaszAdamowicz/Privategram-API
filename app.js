@@ -6,10 +6,10 @@ const mongoose = require('mongoose');
 const compression = require('compression');
 const helmet = require('helmet');
 const path = require('path');
-const mongoDB = require('./settings/mongoDB');
+const mongoDB = require('./config/mongoDB');
 const apiRouter = require('./api/index');
 const error = require('./utils/error');
-const url = require('./settings/hostUrl');
+const url = require('./config/hostUrl');
 const app = express();
 
 app.use(cors({origin:'*'}));

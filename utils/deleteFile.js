@@ -1,5 +1,5 @@
 const fs  = require('fs');
-const url = require('../settings/hostUrl');
+const url = require('../config/hostUrl');
 
 const deleteFiles = (files, year) => {
     

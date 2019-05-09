@@ -8,9 +8,9 @@ Project is still in development.
 
 To run the API locally, you need mongoDB (https://www.mongodb.com/) and node.js and NPM installed (https://nodejs.org/en/download/package-manager/)
 
-In ``` settings/mongoDB.js ``` you need to fill mongoDB credentials
-In ``` settings/jwt.js ``` you set JWT secret
-In ``` settings/hostUrl.js ``` you set url needed to create paths to files you will be adding to database.
+In ``` config/mongoDB.js ``` you need to fill mongoDB credentials
+In ``` config/jwt.js ``` you set JWT secret
+In ``` config/hostUrl.js ``` you set url needed to create paths to files you will be adding to database.
 
 ```
 git clone https://github.com/TomaszAdamowicz/Privategram-API.git
