@@ -9,10 +9,10 @@ const path = require('path');
 const mongoDB = require('./config/mongoDB');
 const apiRouter = require('./api/index');
 const error = require('./utils/error');
-const url = require('./config/hostUrl');
 const app = express();
+const corsOrigin = require('./config/cors');
 
-app.use(cors({origin:'*'}));
+app.use(cors({origin: corsOrigin()}));
 
 app.use(helmet());
 
