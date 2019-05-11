@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const postController = require('../controllers/postController');
 const auth = require('../../auth/authorization');
-const saveFile = require('../../services/saveFile');
-const resizeImage = require('../../services/resizeImage');
-const createFolder = require('../../services/createFolder');
+const saveFile = require('../../services/file/saveFile');
+const resizeImage = require('../../services/file/resizeImage');
+const createFolder = require('../../services/file/createFolder');
 const checkAdmin = require('../../utils/checkAdmin');
 
 router.use(auth);

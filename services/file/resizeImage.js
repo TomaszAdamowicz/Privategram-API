@@ -1,6 +1,6 @@
 const jimp = require('jimp')
 const path = require('path')
-const dateData =  require('../utils/date')
+const dateData =  require('../../utils/date')
 
 const resizeImage = async (req, res, next) => {
 

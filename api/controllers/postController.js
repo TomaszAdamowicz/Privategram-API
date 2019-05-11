@@ -4,9 +4,9 @@ const url = require('../../config/hostUrl');
 const path = require('path');
 const AdmZip = require('adm-zip');
 const fs = require('fs');
-const postCreator = require('../../services/postCreator');
-const postUpdater = require('../../services/postUpdater');
-const deleteFiles = require('../../services/deleteFile');
+const postCreator = require('../../services/post/postCreator');
+const postUpdater = require('../../services/post/postUpdater');
+const deleteFiles = require('../../services/file/deleteFile');
 
 
 exports.getPosts = async (req, res, next) => {

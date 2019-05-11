@@ -1,5 +1,5 @@
-const makeTagsArray = require('../utils/makeTagsArray');
-const sanitize = require('../utils/sanitize');
+const makeTagsArray = require('../../utils/makeTagsArray');
+const sanitize = require('../../utils/sanitize');
 
 const postUpdater = (req) => {
     const {title, public, tags} = req.body;

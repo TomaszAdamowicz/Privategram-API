@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const salt = require('../../config/secret');
 const sanitize = require('../../utils/sanitize');
-
+const userCreator = require('../../services/user/userCreator');
 
 exports.login = async (req, res, next) => {
     const {userName, userPassword} = req.body;
@@ -52,16 +52,7 @@ exports.login = async (req, res, next) => {
 }
 
 exports.save = (req, res, next) => {
-    const {username, password, email, role} = req.body;
-
-    const newUser = {
-        name: sanitize(username),
-        password: password,
-        email: email,
-        role: role
-    }
-
-    if (role === undefined) delete newUser['role'];
+    const newUser = userCreator(req);
 
     User.create(newUser , (err, result) => {
         if(err) next(err);
