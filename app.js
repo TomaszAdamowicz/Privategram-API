@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const compression = require('compression');
 const helmet = require('helmet');
-const path = require('path');
 const mongoDB = require('./config/mongoDB');
 const apiRouter = require('./api/index');
 const error = require('./utils/error');
