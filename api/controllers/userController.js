@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const salt = require('../../config/secret');
+const salt = require('../../config/jwt');
 const sanitize = require('../../utils/sanitize');
 const userCreator = require('../../services/user/userCreator');
 
