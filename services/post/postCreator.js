@@ -1,9 +1,9 @@
-const Post = require('../api/models/postModel');
-const makeTagsArray = require('../utils/makeTagsArray');
-const makePathsArray = require('../utils/makePathsArray');
-const dateData = require('../utils/date');
-const url = require('../settings/hostUrl');
-const sanitize = require('../utils/sanitize');
+const Post = require('../../api/models/postModel');
+const makeTagsArray = require('../../utils/makeTagsArray');
+const makePathsArray = require('../../utils/makePathsArray');
+const dateData = require('../../utils/date');
+const url = require('../../config/hostUrl');
+const sanitize = require('../../utils/sanitize');
 
 const getYear = () => {
     return dateData().year;
