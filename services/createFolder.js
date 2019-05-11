@@ -1,5 +1,5 @@
 const fs = require('fs');
-const dateData = require('./date');
+const dateData = require('../utils/date');
 
 const createFolder = (dest) => {
     const makeFolder = (req, res, next) => {

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const postController = require('../controllers/postController');
 const auth = require('../../auth/authorization');
-const fileUpload = require('../../utils/multer');
-const resizeImage = require('../../utils/resizeImage');
-const createFolder = require('../../utils/createFolder');
+const saveFile = require('../../services/saveFile');
+const resizeImage = require('../../services/resizeImage');
+const createFolder = require('../../services/createFolder');
 const checkAdmin = require('../../utils/checkAdmin');
 
 router.use(auth);
@@ -30,7 +30,7 @@ router.use(checkAdmin);
 
 router.route('/save')
         .all(createFolder('images'))
-        .all(fileUpload().array('images'))
+        .all(saveFile().array('images'))
         .all(resizeImage)
         .post(postController.save);
 

@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const dateData = require('./date');
+const dateData = require('../utils/date');
 
 const fileUpload = (req, res, next) => {
     const year = dateData().year;

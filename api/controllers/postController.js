@@ -1,16 +1,13 @@
 const Post = require('../models/postModel');
 const User = require('../models/userModel');
-const dateData = require('../../utils/date');
-const deleteFiles = require('../../utils/deleteFile');
 const url = require('../../config/hostUrl');
-const makeTagsArray = require('../../utils/makeTagsArray');
-const makePathsArray = require('../../utils/makePathsArray');
-const sanitize = require('../../utils/sanitize');
 const path = require('path');
 const AdmZip = require('adm-zip');
 const fs = require('fs');
 const postCreator = require('../../services/postCreator');
 const postUpdater = require('../../services/postUpdater');
+const deleteFiles = require('../../services/deleteFile');
+
 
 exports.getPosts = async (req, res, next) => {
     const {tag, page, year} = req.params;
