@@ -9,6 +9,8 @@ const sanitize = require('../../utils/sanitize');
 const path = require('path');
 const AdmZip = require('adm-zip');
 const fs = require('fs');
+const postCreator = require('../../services/postCreator');
+const postUpdater = require('../../services/postUpdater');
 
 exports.getPosts = async (req, res, next) => {
     const {tag, page, year} = req.params;
@@ -90,34 +92,9 @@ exports.getPhotosCopy = async (req, res, next) => {
 }
 
 exports.save = async (req, res, next) => {
-
-    const year = dateData().year;
-    const imgPaths = [];
-
-    req.files.forEach( file => {
-        imgPaths.push(`${url()}/images/${year}/${file.filename}`);
-    })
-
-    const imgSmallPaths = [];
-
-    req.resizedImagesNames.forEach( file => {
-        imgSmallPaths.push(`${url()}/images/${year}/${file}`)
-    })
-
-    const {title, public, userId, tags} = req.body;
+    const {userId} = req.body;
     const user = await User.findById({_id: userId});
-
-    const imgTags = makeTagsArray(tags);
-    const paths = makePathsArray(imgPaths, imgSmallPaths);
-
-    const post = new Post ({
-        title: sanitize(title),
-        media: 'jpg',
-        path: paths,
-        public: public,
-        author: sanitize(user.name),
-        tags: sanitize(imgTags)
-    })
+    const post = postCreator(req, user.name);
 
     post.save((err) => {
         if(err) {
@@ -133,29 +110,19 @@ exports.save = async (req, res, next) => {
 }
 
 exports.update = (req, res, next) => {
-    const {_id, title, tags, public} = req.body;
-    let newPost = {};
+    const {_id} = req.body;
+    const post = postUpdater(req);
 
-    if(title) newPost.title = sanitize(title)
-
-    newPost.public = public;
-
-    if(tags) {
-        const tagsArray = makeTagsArray(tags);
-        newPost.tags = sanitize(tagsArray);
-    }
-
-    Post.findByIdAndUpdate({_id: _id}, newPost, {new: true}, (err, post) => {
+    Post.findByIdAndUpdate({_id: _id}, post, {new: true}, (err, post) => {
         if(err){
             res.status(500).json({
                 success: false,
-                message: 'Cannot update post, please try again later'
+                message: 'Nie udało się zaktualizować posta'
             })
         } else {
             res.status(200).json(post)
         }
     })
-
 }
 
 exports.delete = async (req, res, next) => {
