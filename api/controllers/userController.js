@@ -1,8 +1,5 @@
 const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const salt = require('../../config/jwt');
-const sanitize = require('../../utils/sanitize');
+const userLogger = require('../../services/user/userLogger');
 const userCreator = require('../../services/user/userCreator');
 
 exports.login = async (req, res, next) => {
@@ -17,38 +14,18 @@ exports.login = async (req, res, next) => {
             success: false,
             message: 'Wrong username or password'
         })
-    } else if(user) {
-        bcrypt.compare(userPassword, user.password, (err, result) => {
-            if(err) {
-                res.status(403).json({
-                    success: false,
-                    message: 'Wrong username or password'
-                })
-            } else if(result) {
-                const payload = {
-                    user: user._id,
-                }
-
-                const token = jwt.sign(payload, salt(), {
-                    expiresIn: '96h'
-                })
-
-                res.status(200).json({
-                    success: true,
-                    message: 'User logged in',
-                    user: user._id,
-                    role: user.role,
-                    token: token
-                })
-            } else if(!result) {
-                res.status(403).json({
-                    success: false,
-                    message: 'Wrong username or password'
-                })
-            }
-        })
+    } else {
+        const loginResult = await userLogger(user, userPassword);
+        
+        if(loginResult !== null){
+            res.status(200).json(loginResult);
+        } else {
+            res.status(403).json({
+                success: false,
+                message: 'Wrong username or password'
+            })
+        }
     }
-
 }
 
 exports.save = (req, res, next) => {
