@@ -11,6 +11,8 @@ const error = require('./utils/error');
 const app = express();
 const corsOrigin = require('./config/cors');
 
+const port = process.env.port || 3006;
+
 app.use(cors({origin: corsOrigin()}));
 
 app.use(helmet());
@@ -30,6 +32,6 @@ app.use('/api',apiRouter);
 
 app.use(error);
 
-app.listen(3006, () => {
+app.listen(port, () => {
     console.log('App running on port 3006');
 })
