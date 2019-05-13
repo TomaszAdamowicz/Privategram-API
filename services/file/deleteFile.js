@@ -2,7 +2,7 @@ const fs  = require('fs');
 const url = require('../../config/hostUrl');
 
 const deleteFiles = (files, year, next) => {
-    
+
     const flattenedFilesArray = files.reduce((a,b) => {
         return a.concat(b);
     })

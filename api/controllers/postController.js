@@ -1,13 +1,12 @@
 const Post = require('../models/postModel');
 const User = require('../models/userModel');
-const url = require('../../config/hostUrl');
-const path = require('path');
-const AdmZip = require('adm-zip');
 const fs = require('fs');
 const postCreator = require('../../services/post/postCreator');
 const postUpdater = require('../../services/post/postUpdater');
 const deleteFiles = require('../../services/file/deleteFile');
 const createSearchFilters = require('../../utils/createSearchFilters');
+const createDownloadPaths = require('../../utils/createDownloadPaths');
+const zipFiles = require('../../services/file/zipFiles');
 
 exports.getPosts = async (req, res, next) => {
     const {tag, page, year} = req.params;
@@ -27,9 +26,7 @@ exports.getPosts = async (req, res, next) => {
 
 exports.getUserPosts = (req, res, next) => {
     User.findById(req.params.id).populate('posts').exec((err, user) => {
-        if(err) {
-            return next(err);
-        } else if(user.posts.length > 0){
+        if(user.posts.length > 0){
             res.status(200).json(user.posts)
         } else {
             res.status(204).json({
@@ -41,33 +38,16 @@ exports.getUserPosts = (req, res, next) => {
 }
 
 exports.getPhotosCopy = async (req, res, next) => {
-    const zipPath = path.join(__dirname, '../../public');
     const posts = await Post.find();
-    const zip = new AdmZip();
-    const today = new Date();
-    const fileName = `wojtagram-${today.getMonth()}`;
+    const paths = createDownloadPaths(posts);
 
-    const createPaths = (array) => {
-        const links = array.map( arrayItem => arrayItem.path[0]);
-        const newArray = [].concat(...links);
-        const urls = newArray.map(item => item.replace(url(), zipPath));
+    const fileData = zipFiles(paths);
 
-        return urls;
-    }
-
-    const paths = createPaths(posts);
-
-    paths.map(path => {
-        zip.addLocalFile(path);
-    })
-
-    zip.writeZip(`${zipPath}/zipped/${fileName}.zip`);
-
-    res.download(`${zipPath}/zipped/${fileName}.zip`, `${fileName}.zip`, (err) => {
+    res.download(fileData.path, fileData.file, (err) => {
         if (err) {
             return next(err);
         } else {
-            fs.unlink(`${zipPath}/zipped/${fileName}.zip`, (err) => {
+            fs.unlink(fileData.path, (err) => {
                 if(err) {
                     return next(err);
                 }
@@ -83,11 +63,11 @@ exports.save = async (req, res, next) => {
 
     post.save((err) => {
         if(err) {
-            res.status(500)
+            return next(err);
         } else {
             user.posts.push(post);
             user.save((err) => {
-                return next(err)
+                next(err)
             })
             res.status(200).json(post)
         }
@@ -100,7 +80,9 @@ exports.update = (req, res, next) => {
 
     Post.findByIdAndUpdate({_id: _id}, post, {new: true}, (err, post) => {
         if(err){
-            return next(err);
+            let error = new Error('Nie udało się zaktualizować posta');
+    
+            return next(error);
         } else {
             res.status(200).json(post)
         }
@@ -109,18 +91,19 @@ exports.update = (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     const {postId, author} = req.body;
-
     const user = await User.findOne({name: author});
     const post = await Post.findById(postId);
 
-    deleteFiles(post.path, post.year, next);
+    deleteFiles(post.path, post.year);
 
     user.posts.remove(postId);
     user.save()
 
     Post.findByIdAndDelete({_id: postId}, (err) => {
         if(err) {
-            return next(err);
+            let error = new Error('Nie udało się usunąć posta, spróbuj ponownie później');
+    
+            return next(error);
         } else {
             res.status(200).json({
                 success: true,
@@ -143,6 +126,6 @@ exports.getYears = async (req, res, next) => {
             years: years
         });
     } else {
-        return next(err);
+        return next();
     }
 }
