@@ -18,6 +18,11 @@ const resizeImage = async (req, res, next) => {
                     .resize(500, jimp.AUTO)
                     .write(`${filePath}/${fileName}-small.jpg`)
         })
+        .catch(err => {
+            let error = new Error('Tworzenie miniaturki nie powiodło się');
+
+            return next(error);
+        })
 
         imagesNames.push(`${fileName}-small.jpg`)
     })

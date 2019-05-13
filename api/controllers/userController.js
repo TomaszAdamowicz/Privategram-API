@@ -32,8 +32,9 @@ exports.save = (req, res, next) => {
     const newUser = userCreator(req);
 
     User.create(newUser , (err, result) => {
-        if(err) next(err);
-
+        if(err) {
+            return next(err);
+        }
         res.status(200).json(result)
     })
 }
@@ -60,10 +61,7 @@ exports.delete = async (req, res, next) => {
 
     User.findByIdAndDelete({_id: userId}, (err) => {
         if(err) {
-            res.status(500).json({
-                success: false,
-                message: 'Cannot delete user. Please try again later'
-            })
+            return next(err);
         } else {
             res.status(200).json({
                 success: true,

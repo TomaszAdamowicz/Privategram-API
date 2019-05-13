@@ -43,7 +43,9 @@ exports.getPosts = async (req, res, next) => {
 
 exports.getUserPosts = (req, res, next) => {
     User.findById(req.params.id).populate('posts').exec((err, user) => {
-        if(user.posts.length > 0){
+        if(err) {
+            return next(err);
+        } else if(user.posts.length > 0){
             res.status(200).json(user.posts)
         } else {
             res.status(204).json({
@@ -79,10 +81,12 @@ exports.getPhotosCopy = async (req, res, next) => {
 
     res.download(`${zipPath}/zipped/${fileName}.zip`, `${fileName}.zip`, (err) => {
         if (err) {
-            console.log(err);
+            return next(err);
         } else {
             fs.unlink(`${zipPath}/zipped/${fileName}.zip`, (err) => {
-                if(err) throw err;
+                if(err) {
+                    return next(err);
+                }
             });
         }
     });
@@ -99,7 +103,7 @@ exports.save = async (req, res, next) => {
         } else {
             user.posts.push(post);
             user.save((err) => {
-                next(err)
+                return next(err)
             })
             res.status(200).json(post)
         }
@@ -112,10 +116,7 @@ exports.update = (req, res, next) => {
 
     Post.findByIdAndUpdate({_id: _id}, post, {new: true}, (err, post) => {
         if(err){
-            res.status(500).json({
-                success: false,
-                message: 'Nie udało się zaktualizować posta'
-            })
+            return next(err);
         } else {
             res.status(200).json(post)
         }
@@ -128,17 +129,14 @@ exports.delete = async (req, res, next) => {
     const user = await User.findOne({name: author});
     const post = await Post.findById(postId);
 
-    deleteFiles(post.path, post.year);
+    deleteFiles(post.path, post.year, next);
 
     user.posts.remove(postId);
     user.save()
 
     Post.findByIdAndDelete({_id: postId}, (err) => {
         if(err) {
-            res.status(500).json({
-                success: false,
-                message: 'Cannot delete file, please try again later',
-            })
+            return next(err);
         } else {
             res.status(200).json({
                 success: true,
@@ -161,9 +159,6 @@ exports.getYears = async (req, res, next) => {
             years: years
         });
     } else {
-        res.status(500),json({
-            success: false,
-            message: 'Server error connection'
-        })
+        return next(err);
     }
 }

@@ -16,7 +16,11 @@ const fileUpload = (req, res, next) => {
 
     const fileFilter = (req, file, cb) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-            return cb(new Error('Only image files are allowed!'));
+            return cb(null, false, () => {
+                let error = new Error('Wrong file type');
+
+                return next(error);
+            });
         }
         cb(null, true);
     }
