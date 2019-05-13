@@ -19,9 +19,7 @@ const resizeImage = async (req, res, next) => {
                     .write(`${filePath}/${fileName}-small.jpg`)
         })
         .catch(err => {
-            let error = new Error('Tworzenie miniaturki nie powiodło się');
-
-            return next(error);
+            return next(err);
         })
 
         imagesNames.push(`${fileName}-small.jpg`)
