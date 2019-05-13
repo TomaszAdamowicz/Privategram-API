@@ -7,34 +7,18 @@ const fs = require('fs');
 const postCreator = require('../../services/post/postCreator');
 const postUpdater = require('../../services/post/postUpdater');
 const deleteFiles = require('../../services/file/deleteFile');
-
+const createSearchFilters = require('../../utils/createSearchFilters');
 
 exports.getPosts = async (req, res, next) => {
     const {tag, page, year} = req.params;
     const user = await User.findById(res.locals.id);
-
-    const filters = {};
-
-    if(tag){
-        filters.tags = `#${tag}`;
-    }
-
-    if(year){
-        filters.year = year;
-    }
-
-    if(user.role != "Admin"){
-        filters.public = {
-            $ne: false
-        };
-    }
-
+    const filters = createSearchFilters(tag, year, user.role);
     const posts = await Post.find({...filters}).skip(page * 10).limit(10).sort({timestamp: -1});
 
     if(posts){
         res.status(200).json(posts);
     } else {
-        res.status(500).json({
+        res.status(204).json({
             success: false,
             message: 'No posts matching tag'
         })
