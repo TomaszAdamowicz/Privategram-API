@@ -7,18 +7,20 @@ const deleteFiles = (files, year, next) => {
         return a.concat(b);
     })
 
-    const removeFile = (fileName) => {
-        fs.unlink(`./public/images/${year}/${fileName}`, (err) => {
+    const removeFile = (filePath) => {
+        fs.unlink(filePath , (err) => {
             if(err) {
-                return next(err);
+                console.log(err);
             }
         })
     }
 
     flattenedFilesArray.forEach( file => {
         const fileName = file.replace(`${url()}/images/${year}/`,'').trim();
+        const filePath = `./public/images/${year}/${fileName}`;
+        
+        if(fs.existsSync(filePath)) removeFile(fileName);
 
-        removeFile(fileName);
     })
 }
 
