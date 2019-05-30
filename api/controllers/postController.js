@@ -76,7 +76,7 @@ exports.save = async (req, res, next) => {
 
 exports.update = (req, res, next) => {
     const {_id} = req.body;
-    const post = postUpdater(req);
+    let post = postUpdater(req);
 
     Post.findByIdAndUpdate({_id: _id}, post, {new: true}, (err, post) => {
         if(err){

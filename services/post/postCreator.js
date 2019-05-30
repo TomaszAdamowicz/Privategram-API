@@ -2,7 +2,7 @@ const Post = require('../../api/models/postModel');
 const makeTagsArray = require('../../utils/makeTagsArray');
 const makePathsArray = require('../../utils/makePathsArray');
 const dateData = require('../../utils/date');
-const url = require('../../config/hostUrl');
+const config = require('../../config/config');
 const sanitize = require('../../utils/sanitize');
 
 const getYear = () => {
@@ -10,13 +10,13 @@ const getYear = () => {
 }
 
 const makePaths = (req, num) => {
-    const paths = req.files.map(file => `${url()}/images/${num}/${file.filename}`);
+    const paths = req.files.map(file => `${config.host}/images/${num}/${file.filename}`);
 
     return paths;
 }
 
 const makeSmallPaths = (req, num) => {
-    const paths = req.resizedImagesNames.map(file => `${url()}/images/${num}/${file}`);
+    const paths = req.resizedImagesNames.map(file => `${config.host}/images/${num}/${file}`);
 
     return paths;
 }

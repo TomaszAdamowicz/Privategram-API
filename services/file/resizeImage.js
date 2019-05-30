@@ -10,7 +10,7 @@ const resizeImage = async (req, res, next) => {
 
     images.forEach( image => {
         const fileName = path.parse(image.filename).name;
-        const filePath = path.join(__dirname, `../public/images/${year}`);
+        const filePath = path.join(__dirname, `../../public/images/${year}`);
 
         jimp.read(image.path)
         .then(file => {
@@ -22,7 +22,7 @@ const resizeImage = async (req, res, next) => {
             return next(err);
         })
 
-        imagesNames.push(`${fileName}-medium.jpg`)
+        imagesNames.push(`${fileName}-small.jpg`)
     })
 
     req.resizedImagesNames = imagesNames;

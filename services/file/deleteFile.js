@@ -1,7 +1,7 @@
 const fs  = require('fs');
-const url = require('../../config/hostUrl');
+const config = require('../../config/config');
 
-const deleteFiles = (files, year, next) => {
+const deleteFiles = (files, year) => {
 
     const flattenedFilesArray = files.reduce((a,b) => {
         return a.concat(b);
@@ -16,10 +16,10 @@ const deleteFiles = (files, year, next) => {
     }
 
     flattenedFilesArray.forEach( file => {
-        const fileName = file.replace(`${url()}/images/${year}/`,'').trim();
+
+        const fileName = file.replace(`${config.host}/images/${year}/`,'').trim();
         const filePath = `./public/images/${year}/${fileName}`;
-        
-        if(fs.existsSync(filePath)) removeFile(fileName);
+        if(fs.existsSync(filePath)) removeFile(filePath);
 
     })
 }

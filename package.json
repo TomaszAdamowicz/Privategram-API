@@ -1,5 +1,5 @@
 {
-  "name": "Privategram",
+  "name": "album",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,6 +10,7 @@
   "author": "Tomasz Adamowicz",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^8.0.0",
     "nodemon": "^1.18.9"
   },
   "dependencies": {

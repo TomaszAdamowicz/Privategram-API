@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const salt = require('../../config/jwt');
+const config = require('../../config/config');
 
 const checkPass = (user, password) => {
     const pass1 = user.password;
@@ -13,7 +13,7 @@ const checkPass = (user, password) => {
                         user: user._id
                     }
 
-                    const token = jwt.sign(payload, salt(), {
+                    const token = jwt.sign(payload, config.jwt, {
                         expiresIn: '96h'
                     })
 

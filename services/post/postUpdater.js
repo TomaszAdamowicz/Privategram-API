@@ -3,9 +3,9 @@ const sanitize = require('../../utils/sanitize');
 
 const postUpdater = (req) => {
     const {title, public, tags} = req.body;
-    const post = {};
+    let post = {};
 
-    if(title) title = sanitize(title);
+    if(title) post.title = sanitize(title);
 
     if(tags) {
         const sanitzedTags = sanitize(tags);
