@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const salt = require('../config/jwt');
+const config = require('../config/config');
 
 const verifyToken = (req, res, next) => {
     let token = '';
@@ -15,11 +15,11 @@ const verifyToken = (req, res, next) => {
         })
     }
 
-    jwt.verify(token, salt(), (err, decoded) => {
+    jwt.verify(token, config.jwt, (err, decoded) => {
         if(err) {
-            return res.status(401).json({
+            return res.status(440).json({
                 sucess: false,
-                message: 'Session expired. Login again'
+                message: 'Expired token'
             })
         }
 
