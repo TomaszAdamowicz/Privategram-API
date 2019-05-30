@@ -22,7 +22,7 @@ const resizeImage = async (req, res, next) => {
             return next(err);
         })
 
-        imagesNames.push(`${fileName}-small.jpg`)
+        imagesNames.push(`${fileName}-medium.jpg`)
     })
 
     req.resizedImagesNames = imagesNames;
