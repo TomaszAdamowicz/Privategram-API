@@ -2,32 +2,30 @@ const jimp = require('jimp')
 const path = require('path')
 const dateData =  require('../../utils/date')
 
-const resizeImage = async (req, res, next) => {
+const resizeImage = (req, res, next) => {
 
     const images = req.files;
     const year = dateData().year;
-    const imagesNames = [];
 
-    images.forEach( image => {
+    const resizeImages = async (image) => {
         const fileName = path.parse(image.filename).name;
         const filePath = path.join(__dirname, `../../public/images/${year}`);
 
-        jimp.read(image.path)
-        .then(file => {
-            return file
-                    .resize(500, jimp.AUTO)
-                    .write(`${filePath}/${fileName}-small.jpg`)
+        const photo = await jimp.read(image.path);
+        await photo.resize(500, jimp.AUTO);
+        await photo.write(`${filePath}/${fileName}-small.jpg`);
+
+        return `${fileName}-small.jpg`;
+    }
+
+    const imagesNames = images.map(resizeImages);
+
+    Promise.all(imagesNames)
+        .then( images =>{
+            req.resizedImagesNames = images;
+            next();
         })
-        .catch(err => {
-            return next(err);
-        })
 
-        imagesNames.push(`${fileName}-small.jpg`)
-    })
-
-    req.resizedImagesNames = imagesNames;
-
-    next();
 }
 
 module.exports = resizeImage;
