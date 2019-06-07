@@ -19,7 +19,8 @@ const deleteFiles = (files, year) => {
 
         const fileName = file.replace(`${config.host}/images/${year}/`,'').trim();
         const filePath = `./public/images/${year}/${fileName}`;
-        if(fs.existsSync(filePath)) removeFile(filePath);
+
+        (fs.existsSync(filePath)) ? removeFile(filePath) : next();
 
     })
 }
