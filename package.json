@@ -17,7 +17,7 @@
     "adm-zip": "^0.4.13",
     "cors": "^2.8.5",
     "express-validator": "^5.3.1",
-    "jimp": "^0.6.0",
+    "jimp": "^0.22.7",
     "morgan": "^1.9.1",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.3",
